@@ -1,2 +1,2 @@
 # Hermes
-Communicator client based on CoolQ
+Communicating client based on CoolQ.
