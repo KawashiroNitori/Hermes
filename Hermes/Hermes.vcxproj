@@ -47,6 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>cn.ikazuchi.hermes</TargetName>
+    <LibraryPath>..\openssl\out32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -70,12 +71,16 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;HERMES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\websocketpp;..\curl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>ssleay32.lib;libeay32.lib;ws2_32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -83,6 +88,99 @@
     <ClInclude Include="Hermes.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="websocketpp\base64\base64.hpp" />
+    <ClInclude Include="websocketpp\client.hpp" />
+    <ClInclude Include="websocketpp\close.hpp" />
+    <ClInclude Include="websocketpp\common\asio.hpp" />
+    <ClInclude Include="websocketpp\common\asio_ssl.hpp" />
+    <ClInclude Include="websocketpp\common\chrono.hpp" />
+    <ClInclude Include="websocketpp\common\connection_hdl.hpp" />
+    <ClInclude Include="websocketpp\common\cpp11.hpp" />
+    <ClInclude Include="websocketpp\common\functional.hpp" />
+    <ClInclude Include="websocketpp\common\md5.hpp" />
+    <ClInclude Include="websocketpp\common\memory.hpp" />
+    <ClInclude Include="websocketpp\common\network.hpp" />
+    <ClInclude Include="websocketpp\common\platforms.hpp" />
+    <ClInclude Include="websocketpp\common\random.hpp" />
+    <ClInclude Include="websocketpp\common\regex.hpp" />
+    <ClInclude Include="websocketpp\common\stdint.hpp" />
+    <ClInclude Include="websocketpp\common\system_error.hpp" />
+    <ClInclude Include="websocketpp\common\thread.hpp" />
+    <ClInclude Include="websocketpp\common\time.hpp" />
+    <ClInclude Include="websocketpp\common\type_traits.hpp" />
+    <ClInclude Include="websocketpp\concurrency\basic.hpp" />
+    <ClInclude Include="websocketpp\concurrency\none.hpp" />
+    <ClInclude Include="websocketpp\config\asio.hpp" />
+    <ClInclude Include="websocketpp\config\asio_client.hpp" />
+    <ClInclude Include="websocketpp\config\asio_no_tls.hpp" />
+    <ClInclude Include="websocketpp\config\asio_no_tls_client.hpp" />
+    <ClInclude Include="websocketpp\config\boost_config.hpp" />
+    <ClInclude Include="websocketpp\config\core.hpp" />
+    <ClInclude Include="websocketpp\config\core_client.hpp" />
+    <ClInclude Include="websocketpp\config\debug.hpp" />
+    <ClInclude Include="websocketpp\config\debug_asio.hpp" />
+    <ClInclude Include="websocketpp\config\debug_asio_no_tls.hpp" />
+    <ClInclude Include="websocketpp\config\minimal_client.hpp" />
+    <ClInclude Include="websocketpp\config\minimal_server.hpp" />
+    <ClInclude Include="websocketpp\connection.hpp" />
+    <ClInclude Include="websocketpp\connection_base.hpp" />
+    <ClInclude Include="websocketpp\endpoint.hpp" />
+    <ClInclude Include="websocketpp\endpoint_base.hpp" />
+    <ClInclude Include="websocketpp\error.hpp" />
+    <ClInclude Include="websocketpp\extensions\extension.hpp" />
+    <ClInclude Include="websocketpp\extensions\permessage_deflate\disabled.hpp" />
+    <ClInclude Include="websocketpp\extensions\permessage_deflate\enabled.hpp" />
+    <ClInclude Include="websocketpp\frame.hpp" />
+    <ClInclude Include="websocketpp\http\constants.hpp" />
+    <ClInclude Include="websocketpp\http\impl\parser.hpp" />
+    <ClInclude Include="websocketpp\http\impl\request.hpp" />
+    <ClInclude Include="websocketpp\http\impl\response.hpp" />
+    <ClInclude Include="websocketpp\http\parser.hpp" />
+    <ClInclude Include="websocketpp\http\request.hpp" />
+    <ClInclude Include="websocketpp\http\response.hpp" />
+    <ClInclude Include="websocketpp\impl\connection_impl.hpp" />
+    <ClInclude Include="websocketpp\impl\endpoint_impl.hpp" />
+    <ClInclude Include="websocketpp\impl\utilities_impl.hpp" />
+    <ClInclude Include="websocketpp\logger\basic.hpp" />
+    <ClInclude Include="websocketpp\logger\levels.hpp" />
+    <ClInclude Include="websocketpp\logger\stub.hpp" />
+    <ClInclude Include="websocketpp\logger\syslog.hpp" />
+    <ClInclude Include="websocketpp\message_buffer\alloc.hpp" />
+    <ClInclude Include="websocketpp\message_buffer\message.hpp" />
+    <ClInclude Include="websocketpp\message_buffer\pool.hpp" />
+    <ClInclude Include="websocketpp\processors\base.hpp" />
+    <ClInclude Include="websocketpp\processors\hybi00.hpp" />
+    <ClInclude Include="websocketpp\processors\hybi07.hpp" />
+    <ClInclude Include="websocketpp\processors\hybi08.hpp" />
+    <ClInclude Include="websocketpp\processors\hybi13.hpp" />
+    <ClInclude Include="websocketpp\processors\processor.hpp" />
+    <ClInclude Include="websocketpp\random\none.hpp" />
+    <ClInclude Include="websocketpp\random\random_device.hpp" />
+    <ClInclude Include="websocketpp\roles\client_endpoint.hpp" />
+    <ClInclude Include="websocketpp\roles\server_endpoint.hpp" />
+    <ClInclude Include="websocketpp\server.hpp" />
+    <ClInclude Include="websocketpp\sha1\sha1.hpp" />
+    <ClInclude Include="websocketpp\transport\asio\base.hpp" />
+    <ClInclude Include="websocketpp\transport\asio\connection.hpp" />
+    <ClInclude Include="websocketpp\transport\asio\endpoint.hpp" />
+    <ClInclude Include="websocketpp\transport\asio\security\base.hpp" />
+    <ClInclude Include="websocketpp\transport\asio\security\none.hpp" />
+    <ClInclude Include="websocketpp\transport\asio\security\tls.hpp" />
+    <ClInclude Include="websocketpp\transport\base\connection.hpp" />
+    <ClInclude Include="websocketpp\transport\base\endpoint.hpp" />
+    <ClInclude Include="websocketpp\transport\debug\base.hpp" />
+    <ClInclude Include="websocketpp\transport\debug\connection.hpp" />
+    <ClInclude Include="websocketpp\transport\debug\endpoint.hpp" />
+    <ClInclude Include="websocketpp\transport\iostream\base.hpp" />
+    <ClInclude Include="websocketpp\transport\iostream\connection.hpp" />
+    <ClInclude Include="websocketpp\transport\iostream\endpoint.hpp" />
+    <ClInclude Include="websocketpp\transport\stub\base.hpp" />
+    <ClInclude Include="websocketpp\transport\stub\connection.hpp" />
+    <ClInclude Include="websocketpp\transport\stub\endpoint.hpp" />
+    <ClInclude Include="websocketpp\uri.hpp" />
+    <ClInclude Include="websocketpp\utf8_validator.hpp" />
+    <ClInclude Include="websocketpp\utilities.hpp" />
+    <ClInclude Include="websocketpp\version.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -101,6 +199,16 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="CQP.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\curl\projects\Windows\VC12\lib\libcurl.vcxproj">
+      <Project>{da6f56b4-06a4-441d-ad70-ac5a7d51fadb}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
