@@ -5,6 +5,7 @@
 #include "string"
 #include "cqp.h"
 #include "Hermes.h" //应用AppID等信息，请正确填写，否则酷Q可能无法加载
+#include "Utils.h"
 #include "curl/curl.h"
 
 using namespace std;
@@ -61,6 +62,15 @@ CQEVENT(int32_t, __eventExit, 0)() {
 CQEVENT(int32_t, __eventEnable, 0)() {
 	enabled = true;
 	CQ_addLog(ac, CQLOG_INFO, "信息", (const char*)curl_version());
+	CURL* curl = curl_easy_init();
+	string str;
+	curl_easy_setopt(curl, CURLOPT_URL, "https://httpbin.org/ip");
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Utils::copyDataCallback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &str);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+	CQ_addLog(ac, CQLOG_INFO, "IP", str.c_str());
 	return 0;
 }
 
