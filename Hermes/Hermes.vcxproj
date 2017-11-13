@@ -71,7 +71,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;HERMES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\websocketpp;..\curl\include;..\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\websocketpp;..\curl\include;..\rapidjson\include;..\..\boost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -83,11 +83,30 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>ssleay32.lib;libeay32.lib;ws2_32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4049 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>..\..\boost\lib\vc12_x86\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Activity.h" />
+    <ClInclude Include="ActivityFactory.h" />
+    <ClInclude Include="ActivityFriendAdd.h" />
+    <ClInclude Include="ActivityGroupAdmin.h" />
+    <ClInclude Include="ActivityGroupMemberDec.h" />
+    <ClInclude Include="ActivityGroupMemberInc.h" />
+    <ClInclude Include="ActivityReceivedDiscussMsg.h" />
+    <ClInclude Include="ActivityReceivedGroupMsg.h" />
+    <ClInclude Include="ActivityReceivedMsg.h" />
+    <ClInclude Include="ActivityReceivedPrivateMsg.h" />
+    <ClInclude Include="ActivityRequestFriendAdd.h" />
+    <ClInclude Include="ActivityRequestGroupAdd.h" />
+    <ClInclude Include="Activities.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="cqp.h" />
     <ClInclude Include="Hermes.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="Logging.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="Member.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utils.h" />
@@ -186,6 +205,19 @@
     <ClInclude Include="websocketpp\version.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Activity.cpp" />
+    <ClCompile Include="ActivityFactory.cpp" />
+    <ClCompile Include="ActivityFriendAdd.cpp" />
+    <ClCompile Include="ActivityGroupAdmin.cpp" />
+    <ClCompile Include="ActivityGroupMemberDec.cpp" />
+    <ClCompile Include="ActivityGroupMemberInc.cpp" />
+    <ClCompile Include="ActivityReceivedDiscussMsg.cpp" />
+    <ClCompile Include="ActivityReceivedGroupMsg.cpp" />
+    <ClCompile Include="ActivityReceivedMsg.cpp" />
+    <ClCompile Include="ActivityReceivedPrivateMsg.cpp" />
+    <ClCompile Include="ActivityRequestFriendAdd.cpp" />
+    <ClCompile Include="ActivityRequestGroupAdd.cpp" />
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -195,6 +227,10 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Hermes.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Logging.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Member.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

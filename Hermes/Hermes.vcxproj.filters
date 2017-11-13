@@ -309,6 +309,60 @@
     <ClInclude Include="Utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Activity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityReceivedPrivateMsg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityReceivedGroupMsg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityReceivedDiscussMsg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityGroupAdmin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityGroupMemberDec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityFriendAdd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityRequestFriendAdd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityRequestGroupAdd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Activities.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityGroupMemberInc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivityReceivedMsg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Member.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -321,6 +375,57 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Activity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityReceivedPrivateMsg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityReceivedGroupMsg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityReceivedDiscussMsg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityGroupAdmin.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityGroupMemberDec.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityFriendAdd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityRequestFriendAdd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityRequestGroupAdd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityGroupMemberInc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ActivityReceivedMsg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Member.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

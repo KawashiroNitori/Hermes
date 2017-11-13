@@ -2,13 +2,13 @@
 //
 
 #include "stdafx.h"
-#include "string"
-#include "cqp.h"
 #include "Hermes.h" //应用AppID等信息，请正确填写，否则酷Q可能无法加载
 #include "Utils.h"
+#include "Connection.h"
 #include "curl/curl.h"
+#include "Main.h"
+#include "Activities.h"
 
-using namespace std;
 
 int ac = -1; //AuthCode 调用酷Q的方法时需要用到
 bool enabled = false;
@@ -28,6 +28,7 @@ CQEVENT(const char*, AppInfo, 0)() {
 */
 CQEVENT(int32_t, Initialize, 4)(int32_t AuthCode) {
 	ac = AuthCode;
+	Utils::AUTH_CODE = AuthCode;
 	return 0;
 }
 
@@ -49,7 +50,7 @@ CQEVENT(int32_t, __eventStartup, 0)() {
 * 本函数调用完毕后，酷Q将很快关闭，请不要再通过线程等方式执行其他代码。
 */
 CQEVENT(int32_t, __eventExit, 0)() {
-
+	Main::stop();
 	return 0;
 }
 
@@ -61,16 +62,9 @@ CQEVENT(int32_t, __eventExit, 0)() {
 */
 CQEVENT(int32_t, __eventEnable, 0)() {
 	enabled = true;
+	Utils::isEnabled = true;
 	CQ_addLog(ac, CQLOG_INFO, "信息", (const char*)curl_version());
-	CURL* curl = curl_easy_init();
-	string str;
-	curl_easy_setopt(curl, CURLOPT_URL, "https://httpbin.org/ip");
-	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Utils::copyDataCallback);
-	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &str);
-	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
-	curl_easy_perform(curl);
-	curl_easy_cleanup(curl);
-	CQ_addLog(ac, CQLOG_INFO, "IP", str.c_str());
+	Main::start();
 	return 0;
 }
 
@@ -83,6 +77,9 @@ CQEVENT(int32_t, __eventEnable, 0)() {
 */
 CQEVENT(int32_t, __eventDisable, 0)() {
 	enabled = false;
+	Utils::isEnabled = false;
+	Main::stop();
+	Logging::debug("线程终止。");
 	return 0;
 }
 
@@ -95,7 +92,10 @@ CQEVENT(int32_t, __eventPrivateMsg, 24)(int32_t subType, int32_t sendTime, int64
 
 	//如果要回复消息，请调用酷Q方法发送，并且这里 return EVENT_BLOCK - 截断本条消息，不再继续处理  注意：应用优先级设置为"最高"(10000)时，不得使用本返回值
 	//如果不回复消息，交由之后的应用/过滤器处理，这里 return EVENT_IGNORE - 忽略本条消息
-	CQ_sendPrivateMsg(ac, fromQQ, msg);
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityReceivedPrivateMsg>(subType, sendTime, fromQQ, msg, font);
+		act->process();
+	}
 	return EVENT_IGNORE;
 }
 
@@ -104,7 +104,10 @@ CQEVENT(int32_t, __eventPrivateMsg, 24)(int32_t subType, int32_t sendTime, int64
 * Type=2 群消息
 */
 CQEVENT(int32_t, __eventGroupMsg, 36)(int32_t subType, int32_t sendTime, int64_t fromGroup, int64_t fromQQ, const char *fromAnonymous, const char *msg, int32_t font) {
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityReceivedGroupMsg>(subType, sendTime, fromGroup, fromQQ, fromAnonymous, msg, font);
+		act->process();
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
@@ -113,7 +116,11 @@ CQEVENT(int32_t, __eventGroupMsg, 36)(int32_t subType, int32_t sendTime, int64_t
 * Type=4 讨论组消息
 */
 CQEVENT(int32_t, __eventDiscussMsg, 32)(int32_t subType, int32_t sendTime, int64_t fromDiscuss, int64_t fromQQ, const char *msg, int32_t font) {
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityReceivedDiscussMsg>(subType, sendTime, fromDiscuss, fromQQ, msg, font);
+		act->process();
+	}
+	// send message
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
@@ -123,7 +130,10 @@ CQEVENT(int32_t, __eventDiscussMsg, 32)(int32_t subType, int32_t sendTime, int64
 * subType 子类型，1/被取消管理员 2/被设置管理员
 */
 CQEVENT(int32_t, __eventSystem_GroupAdmin, 24)(int32_t subType, int32_t sendTime, int64_t fromGroup, int64_t beingOperateQQ) {
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityGroupAdmin>(subType, sendTime, fromGroup, beingOperateQQ);
+		act->process();
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
@@ -135,7 +145,10 @@ CQEVENT(int32_t, __eventSystem_GroupAdmin, 24)(int32_t subType, int32_t sendTime
 * beingOperateQQ 被操作QQ
 */
 CQEVENT(int32_t, __eventSystem_GroupMemberDecrease, 32)(int32_t subType, int32_t sendTime, int64_t fromGroup, int64_t fromQQ, int64_t beingOperateQQ) {
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityGroupMemberDec>(subType, sendTime, fromGroup, fromQQ, beingOperateQQ);
+		act->process();
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
@@ -147,7 +160,10 @@ CQEVENT(int32_t, __eventSystem_GroupMemberDecrease, 32)(int32_t subType, int32_t
 * beingOperateQQ 被操作QQ(即加群的QQ)
 */
 CQEVENT(int32_t, __eventSystem_GroupMemberIncrease, 32)(int32_t subType, int32_t sendTime, int64_t fromGroup, int64_t fromQQ, int64_t beingOperateQQ) {
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityGroupMemberInc>(subType, sendTime, fromGroup, fromQQ, beingOperateQQ);
+		act->process();
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
@@ -156,7 +172,10 @@ CQEVENT(int32_t, __eventSystem_GroupMemberIncrease, 32)(int32_t subType, int32_t
 * Type=201 好友事件-好友已添加
 */
 CQEVENT(int32_t, __eventFriend_Add, 16)(int32_t subType, int32_t sendTime, int64_t fromQQ) {
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityFriendAdd>(subType, sendTime, fromQQ);
+		act->process();
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
@@ -167,7 +186,10 @@ CQEVENT(int32_t, __eventFriend_Add, 16)(int32_t subType, int32_t sendTime, int64
 * responseFlag 反馈标识(处理请求用)
 */
 CQEVENT(int32_t, __eventRequest_AddFriend, 24)(int32_t subType, int32_t sendTime, int64_t fromQQ, const char *msg, const char *responseFlag) {
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityRequestFriendAdd>(subType, sendTime, fromQQ, msg, responseFlag);
+		act->process();
+	}
 	//CQ_setFriendAddRequest(ac, responseFlag, REQUEST_ALLOW, "");
 
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
@@ -187,7 +209,10 @@ CQEVENT(int32_t, __eventRequest_AddGroup, 32)(int32_t subType, int32_t sendTime,
 	//} else if (subType == 2) {
 	//	CQ_setGroupAddRequestV2(ac, responseFlag, REQUEST_GROUPINVITE, REQUEST_ALLOW, "");
 	//}
-
+	if (Main::check()) {
+		activity_ptr act = make_shared<ActivityRequestGroupAdd>(subType, sendTime, fromGroup, fromQQ, msg, responseFlag);
+		act->process();
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
